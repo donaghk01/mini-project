@@ -1,48 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Movies</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weather</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
   <section class="section">
-    <div class="container">
-      <table class="table is-bordered">
-  		<thead>
+	<div class="container">
+	  <table class="table is-bordered">
+		<thead>
 		<tr>
-			<th>Poster</th>
-			<th>Title</th>
-			<th>Year</th>
+			<th>location</th>
+			<th>Temperature</th>
+			<th>Weather</th>
+			<th>Time Recorded</th>
 		</tr>
 		</thead>
 		<tbody>
 
 			<tr>
-
-				<td><img src="{{ poster }}" width=400px; height=400px;></img></td>
-				<td><h1> {{ title }} </h1></td>
-				<td><h2> {{ year }}</h2></td>
-			</tr>
-			<tr>
-				<th>Rated</th>
-				<th>Released</th>
-				<th>Plot</th>
-			</tr>
-			<tr>
-				<td><h2> {{ rated }}</h2></td>
-				<td><h2> {{ released }}</h2></td>
-				<td><h2> {{ plot }}</h2></td>
-				{% for rating in rantings %}
-					<td>{{ ratings.Source }}</td>
-					<td>{{ ratings.Value }}</td>
-				{% endfor %}
+				{% for siterep in sitereps %}
+					{% for dv in dvs%}
+						{% for location in locations %}
+							<td><h1> {{ name}}
+							{% for period in periods %}
+								<td><h2> {{ temperature }} </h2></td>
+								<td><h2> {{ weather }}</h2></td>
+								{% endfor %}
+							{% endfor %}
+						{% endfor %}
+					{% endfor %}
 			</tr>
 		</tbody>
 	</table>
-    </div>
+	</div>
   </section>
   </body>
 </html>
