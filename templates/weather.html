@@ -1,35 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Weather</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Weather</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
   <section class="section">
-	<div class="container">
-	  <table class="table is-bordered">
-		<thead>
-		<tr>
-			<th>location</th>
-			<th>Temperature</th>
-			<th>Weather</th>
-			<th>Date Recorded</th>
-		</tr>
-		</thead>
-		<tbody>
+    <div class="container">
+      <table class="table is-bordered">
+        <thead>
+        <tr>
+            <th>location</th>
+            <th>Temperature(C)</th>
+            <th>Weather</th>
+            <th>Date Recorded</th>
+            <th>Add/Remove To Favourites</th>
+        </tr>
+        </thead>
+        <tbody>
 
-			<tr>
-				<td><h1> {{ name}}</h1></td>
-				<td><h2> {{ temperature }} </h2></td>
-				<td><h2> {{ weather }}</h2></td>
-				<td><h2> {{ time }}</h2></td>
-			</tr>
-		</tbody>
-	</table>
-	</div>
+            <tr>
+                <td><h1> {{ name}}</h1></td>
+                <td><h2> {{ temperature }} </h2></td>
+                <td><h2> {{ weather }}</h2></td>
+                <td><h2> {{ time }}</h2></td>
+            <td>
+                <form method="POST" action="/info{{location_search}}">
+                    <button class="button is-primary">Add</button>
+                </form>
+                <form method="POST" action="/delete{{location_search}}">
+                    <button class="button is-danger">Remove</button>
+                </form>
+            </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
   </section>
   </body>
 </html>

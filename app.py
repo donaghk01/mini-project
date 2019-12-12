@@ -12,11 +12,12 @@ mongo = PyMongo(app)
 def info():
     apikey = '1b4b3ef1-ae42-4636-8cc1-5c44c1fed7c8'
     location_search = request.form['location_search']
-    r = requests.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-09T00:00:00Z&key='+apikey)
-    #return ('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-09T09:00:00Z&key='+apikey)
+    r = requests.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-12T00:00:00Z&key='+apikey)
+    #return ('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-12T00:00:00Z&key='+apikey)
     json_object = r.json()
 
     sitereps = json_object['SiteRep']
+    current_location = 'false'
 
     for siterep in sitereps:
         dvs = sitereps['DV']
@@ -32,18 +33,22 @@ def info():
                         temperature = reps['T']
                         weather = reps['W']
 
+        #return siterep
+    return render_template('weather.html', name=name, time=time, temperature=temperature, weather=weather, \
+        dvs=dvs, locations=locations, periods=periods, reps=reps, sitereps=sitereps)
+
     if request.method == 'POST':
-        fav = mongo.db.favLocations.insert({'location_search': location_search, 'name': name, 'temperature': temperature, 'weather': weather, 'current_location': current_location})
+        fav = mongo.db.favLocations.insert({'location_search': location_search, 'name': name, \
+            'temperature': temperature, 'weather': weather, 'current_location': current_location})
         resp = 'Added to Favourites'
         return resp
-        #return siterep
-        return render_template('weather.html', name=name, time=time, temperature=temperature, weather=weather, \
-            dvs=dvs, locations=locations, periods=periods, reps=reps, sitereps=sitereps)
+    
+
     #return name
 
-@app.route('/delete/<id>', methods=['POST'])
+'''@app.route('/delete/<id>', methods=['POST'])
 def delete_location(location_search):
-    mongo.db.favLocations.delete_one({'_id': id})
+    mongo.db.favLocations.delete_one({'location_search': location_search})
     return userfavs()
 
 @app.route('/current/<id>', methods=['POST'])
@@ -66,4 +71,4 @@ def index():
 	return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000, host='127.0.0.1')
+    app.run(debug=True, port=5000, host='127.0.0.1')'''
