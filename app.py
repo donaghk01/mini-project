@@ -1,33 +1,65 @@
 from flask import Flask, render_template, request
+from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 import requests
 
 app = Flask(__name__)
+app.secret_key = "secret key"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/weather"
+mongo = PyMongo(app)
 
 @app.route('/info', methods=['POST'])
 def info():
     apikey = '1b4b3ef1-ae42-4636-8cc1-5c44c1fed7c8'
     location_search = request.form['location_search']
-    r = requests.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&key='+apikey)
+    r = requests.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-09T00:00:00Z&key='+apikey)
+    #return ('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-09T09:00:00Z&key='+apikey)
     json_object = r.json()
 
-    siterep = json_object['SiteRep']
-    dv = siterep['DV']
-    location = dv['Location']
-    period = location['Period']
-    rep = period['Rep']
+    sitereps = json_object['SiteRep']
 
-    for siterep in siterep:
-        for dv in dv:
-            for location in location:
-                name = json_object['name']
-                for period in period:
-                    time = json_object['value']
-                    for rep in rep:
-                        temperature = json_object['T']
-                        weather = json_object['W']
-    #return siterep
-    return render_template('movie.html', name=name, time=time, temperature=temperature, weather=weather, dv=dv, location=location, period=period, rep=rep, siterep=siterep)
+    for siterep in sitereps:
+        dvs = sitereps['DV']
+        for dv in dvs:
+            locations = dvs['Location']    
+            for location in locations:
+                periods = locations['Period']
+                name = locations['name']
+                for period in periods:
+                    reps = periods['Rep']
+                    time = periods['value']
+                    for rep in reps:
+                        temperature = reps['T']
+                        weather = reps['W']
 
+    if request.method == 'POST':
+        fav = mongo.db.favLocations.insert({'location_search': location_search, 'name': name, 'temperature': temperature, 'weather': weather, 'current_location': current_location})
+        resp = 'Added to Favourites'
+        return resp
+        #return siterep
+        return render_template('weather.html', name=name, time=time, temperature=temperature, weather=weather, \
+            dvs=dvs, locations=locations, periods=periods, reps=reps, sitereps=sitereps)
+    #return name
+
+@app.route('/delete/<id>', methods=['POST'])
+def delete_location(location_search):
+    mongo.db.favLocations.delete_one({'_id': id})
+    return userfavs()
+
+@app.route('/current/<id>', methods=['POST'])
+def current_location(location_search):
+    mongo.db.favLocations.update({'location_search':location_search},{ '$set':{'current_location': 'true'}})
+    return userFavs()
+
+@app.route('/uncurrent/<id>', methods=['POST'])
+def unwatch_movie(location_search):
+    mongo.db.favLocations.update({'location_search':location_search},{ '$set':{'current_location': 'false'}})
+    return userFavs()
+
+@app.route('/userFavs')
+def userFavs():
+    favLocations = mongo.db.favLocations.find()
+    return render_template('favLocations.html', favLocations=favLocations)
 
 @app.route('/')
 def index():

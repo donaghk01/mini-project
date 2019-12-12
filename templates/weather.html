@@ -16,23 +16,16 @@
 			<th>location</th>
 			<th>Temperature</th>
 			<th>Weather</th>
-			<th>Time Recorded</th>
+			<th>Date Recorded</th>
 		</tr>
 		</thead>
 		<tbody>
 
 			<tr>
-				{% for siterep in sitereps %}
-					{% for dv in dvs%}
-						{% for location in locations %}
-							<td><h1> {{ name}}
-							{% for period in periods %}
-								<td><h2> {{ temperature }} </h2></td>
-								<td><h2> {{ weather }}</h2></td>
-								{% endfor %}
-							{% endfor %}
-						{% endfor %}
-					{% endfor %}
+				<td><h1> {{ name}}</h1></td>
+				<td><h2> {{ temperature }} </h2></td>
+				<td><h2> {{ weather }}</h2></td>
+				<td><h2> {{ time }}</h2></td>
 			</tr>
 		</tbody>
 	</table>
