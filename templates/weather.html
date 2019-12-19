@@ -17,22 +17,19 @@
             <th>Temperature(C)</th>
             <th>Weather</th>
             <th>Date Recorded</th>
-            <th>Add/Remove To Favourites</th>
+            <th>Add To Favourites</th>
         </tr>
         </thead>
         <tbody>
 
             <tr>
-                <td><h1> {{ name}}</h1></td>
+                <td><h1> {{ name }}</h1></td>
                 <td><h2> {{ temperature }} </h2></td>
                 <td><h2> {{ weather }}</h2></td>
                 <td><h2> {{ time }}</h2></td>
             <td>
-                <form method="POST" action="/info{{location_search}}">
+                <form method="POST" action="/save?location={{location_search}}&name={{name}}&temperature={{temperature}}&weather={{weather}}">
                     <button class="button is-primary">Add</button>
-                </form>
-                <form method="POST" action="/delete{{location_search}}">
-                    <button class="button is-danger">Remove</button>
                 </form>
             </td>
             </tr>

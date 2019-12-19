@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Movies</title>
+    <title>Locations</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
@@ -13,31 +13,31 @@
       <table class="table is-bordered">
   		<thead>
 		<tr>
-			<th>Poster</th>
-			<th>Title</th>
-			<th>Year</th>
+			<th>Name</th>
+			<th>Temperature(C)</th>
+			<th>Weather</th>
 			<th>Remove</th>
-			<th>Watched</th>
+			<th>Current Location</th>
 		</tr>
 		</thead>
 		<tbody>
 		{% for item in favLocations %}
 			<tr>
-				<td><img src="{{ item.poster }}" width=100px; height=150px;></img></td>
-				<td><h1> {{ item.title }} </h1></td>
-				<td><h2> {{ item.rated }}</h2></td>
+				<td><h1> {{ item.name }} </h1></td>
+				<td><h2> {{ item.temperature }}</h2></td>
+				<td><h2> {{ item.weather }}</h2></td>
 				<td>
-					<form method="POST" action="/delete/{{item._id}}">
+					<form method="POST" action="/delete/{{item.location_search}}">
 						<button class="button is-danger">Remove</button>
 					</form>
 				</td>
 				<td>
-					{% if item.watched == 'true' %}
-					<form method="POST" action="/unwatch/{{item._id}}">
+					{% if item.current == 'true' %}
+					<form method="POST" action="/uncurrent/{{item.location_search}}">
 						<button class="button is-light">watched</button>
 					</form>
 					{% else %}
-					<form method="POST" action="/watched/{{item._id}}">
+					<form method="POST" action="/current/{{item.location_search}}">
 						<button class="button is-link">watch</button>
 					</form>
 					{% endif %}
