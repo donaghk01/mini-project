@@ -11,12 +11,16 @@ mongo = PyMongo(app)
 
 @app.route('/info', methods=['POST'])
 def info():
-    date = datetime,datetime.now()
+    date = datetime.datetime.now()
+    date = str(date)
+    date = date[0:10]
     apikey = '1b4b3ef1-ae42-4636-8cc1-5c44c1fed7c8'
     location_search = request.form['location_search']
-    r = requests.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-19T00:00:00Z&key='+apikey)
-    #return ('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-12T00:00:00Z&key='+apikey)
+    r = requests.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'\
+        +location_search+'?res=hourly&time=' + date + '&key='+apikey)
     json_object = r.json()
+#    return ('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'\
+#+location_search+'?res=hourly&time=' + date + '&key='+apikey)
 
     sitereps = json_object['SiteRep']
 
@@ -33,10 +37,19 @@ def info():
                     for rep in reps:
                         temperature = reps['T']
                         weather = reps['W']
+    catagories = ['Clear night', 'Sunny day', 'Partly cloudy(night)', 'Partly cloudy(day)'\
+    , 'Not used', 'Mist', 'Fog', 'Cloudy', 'Overcast', 'Light rain shower (night)'\
+    , 'Light rain shower (day)', 'Drizzle' ,'Light rain', 'Heavy rain shower (night)'\
+    , 'Heavy rain shower (day)', 'Heavy rain', 'Sleet shower (night)', 'Sleet shower (day)'\
+    , 'Sleet', 'Hail shower (night)', 'Hail shower (day)', 'Hail', 'Light snow shower (night)'\
+    , 'Light snow shower (day)', 'Light snow', 'Heavy snow shower (night)', 'Heavy snow shower (day)'\
+    , 'Heavy snow', 'Thunder shower (night)', 'Thunder shower (day)', 'Thunder']
+    weather = catagories[int(weather)]
 
-        return date
-#    return render_template('weather.html', name=name, time=time, temperature=temperature, weather=weather, \
-#        dvs=dvs, locations=locations, periods=periods, reps=reps, sitereps=sitereps, location_search=location_search)
+#        return date
+    return render_template('weather.html', name=name, time=time, temperature=temperature\
+        , weather=weather, dvs=dvs, locations=locations, periods=periods, reps=reps\
+        , sitereps=sitereps, location_search=location_search)
     
 
 @app.route('/save', methods=['POST','GET'])
