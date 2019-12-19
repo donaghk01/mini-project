@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import requests
+import datetime
 
 app = Flask(__name__)
 app.secret_key = "secret key"
@@ -10,6 +11,7 @@ mongo = PyMongo(app)
 
 @app.route('/info', methods=['POST'])
 def info():
+    date = datetime,datetime.now()
     apikey = '1b4b3ef1-ae42-4636-8cc1-5c44c1fed7c8'
     location_search = request.form['location_search']
     r = requests.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/'+location_search+'?res=hourly&time=2019-12-19T00:00:00Z&key='+apikey)
@@ -32,9 +34,9 @@ def info():
                         temperature = reps['T']
                         weather = reps['W']
 
-#        return locations
-    return render_template('weather.html', name=name, time=time, temperature=temperature, weather=weather, \
-        dvs=dvs, locations=locations, periods=periods, reps=reps, sitereps=sitereps, location_search=location_search)
+        return date
+#    return render_template('weather.html', name=name, time=time, temperature=temperature, weather=weather, \
+#        dvs=dvs, locations=locations, periods=periods, reps=reps, sitereps=sitereps, location_search=location_search)
     
 
 @app.route('/save', methods=['POST','GET'])

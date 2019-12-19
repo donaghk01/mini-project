@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<nav class="navbar" role="navigation" aria-label="dropdown navigation">
+  <div class="navbar-item has-dropdown is-hoverable">
+    <a class="navbar-link">
+      Weather
+    </a>
+
+    <div class="navbar-dropdown">
+      <a class="navbar-item"href="{{ url_for('index') }}">
+        Search
+      </a>
+      <a class="navbar-item"href="{{ url_for('userFavs') }}">
+        Favourites
+      </a>
+      <a class="navbar-item"href="{{ url_for('userFavs') }}">
+        Current Location
+      </a>
+      <hr class="navbar-divider">
+      <div class="navbar-item">
+        Version 0.5
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div id="container">
+
+  <!-- Jinja2 directives: page contents will go between them -->
+  {% block body %}
+  {% endblock %}
+
+</div>
+
+</html>

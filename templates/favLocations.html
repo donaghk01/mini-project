@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block body %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -32,13 +35,13 @@
 					</form>
 				</td>
 				<td>
-					{% if item.current == 'true' %}
+					{% if item.current_location == 'true' %}
 					<form method="POST" action="/uncurrent/{{item.location_search}}">
-						<button class="button is-light">watched</button>
+						<button class="button is-link">Current Location</button>
 					</form>
 					{% else %}
 					<form method="POST" action="/current/{{item.location_search}}">
-						<button class="button is-link">watch</button>
+						<button class="button is-link is-outlined">Make Current Location</button>
 					</form>
 					{% endif %}
 				</td>
@@ -50,3 +53,4 @@
   </section>
   </body>
 </html>
+{% endblock %}
